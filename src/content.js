@@ -78,3 +78,30 @@ export const learningCopy = {
     noTimer: 'நேர வரம்பில்லை', repeat: 'எப்போது வேண்டுமானாலும்', noRank: 'ஒப்பீடு இல்லை', step: 'படி',
   },
 };
+
+export const shellCopy = {
+  'ta-Latn': {
+    tagline: 'Nee kathukkura vidhathukkaaga.', board: 'TAMIL NADU STATE BOARD', navigation: 'Learning levels', menu: 'Menu', closeMenu: 'Menu-vai moodu', languageLabel: 'Mozhi', homeLabel: 'Padi and Go mugappu',
+    routes: { chat: 'Learn', practice: 'Practise', tests: 'Test', progress: 'Improve', login: 'Log in' },
+    routeNotes: { chat: 'Chatbot', practice: 'Topic questions', tests: 'Mock tests', progress: 'Revision & progress' },
+    directAccess: 'Learning preview-kku po', sampleComing: 'Indha sample module adutha task-il varum.',
+    loginKicker: 'UNAKKAANA KATRAL IDAM', loginTitle: 'Vanakkam, nanba.', signupTitle: 'Pudhusa aarambikkalaam.', loginSubtitle: 'Avasaram illa. Serndhu kathukkalaam.', signupSubtitle: 'Un katral payanam, un vegathil.',
+    login: 'Ulle vaanga', signup: 'Kanakku uruvaakku', name: 'Un peyar', namePlaceholder: 'Unnai eppadi koopidalaam?', email: 'Email mugavari', password: 'Password', passwordPlaceholder: 'Un password-ai podu', passwordNew: 'Kuraindhadhu 12 ezhuthugal', showPassword: 'Password-ai kaattu', hidePassword: 'Password-ai marai', medium: 'Padikkum mozhi', tamilMedium: 'Tamil medium', englishMedium: 'English medium', submitLogin: 'Vaanga, padikkalaam', submitSignup: 'En payanathai thodangu', noSave: 'Idhu preview mattum. Un details anuppavum save pannavum illa.', dismiss: 'Seidhiyai moodu', newHere: 'Inga pudhusa?', existing: 'Erkanave kanakku irukka?', freshStart: 'Pudhusa thodangu', ownPace: 'Ore paadathittam. Un sondha vegam.', classLine: 'Tamil & English vazhi · Tamil Nadu 10-aam vaguppu',
+  },
+  en: {
+    tagline: 'Made for the way you learn.', board: 'TAMIL NADU STATE BOARD', navigation: 'Learning levels', menu: 'Menu', closeMenu: 'Close menu', languageLabel: 'Language', homeLabel: 'Padi and Go home',
+    routes: { chat: 'Learn', practice: 'Practise', tests: 'Test', progress: 'Improve', login: 'Log in' },
+    routeNotes: { chat: 'Chatbot', practice: 'Topic questions', tests: 'Mock tests', progress: 'Revision & progress' },
+    directAccess: 'Go to learning preview', sampleComing: 'This sample module is added in the next task.',
+    loginKicker: 'YOUR SPACE TO GROW', loginTitle: 'Welcome back.', signupTitle: 'A new beginning.', loginSubtitle: 'Good to see you. Let’s turn a new page.', signupSubtitle: 'Your learning journey starts with you.',
+    login: 'Log in', signup: 'Create account', name: 'Your name', namePlaceholder: 'What should we call you?', email: 'Email address', password: 'Password', passwordPlaceholder: 'Enter your password', passwordNew: 'At least 12 characters', showPassword: 'Show password', hidePassword: 'Hide password', medium: 'Study medium', tamilMedium: 'Tamil medium', englishMedium: 'English medium', submitLogin: 'Let’s get learning', submitSignup: 'Start my chapter', noSave: 'This is a preview. No details have been sent or saved.', dismiss: 'Dismiss message', newHere: 'New around here?', existing: 'Already have an account?', freshStart: 'Make a fresh start', ownPace: 'One syllabus. Your own pace.', classLine: 'Tamil & English medium · Tamil Nadu Class 10',
+  },
+  ta: {
+    tagline: 'உன் கற்றலுக்காக உருவாக்கப்பட்டது.', board: 'தமிழ்நாடு மாநிலப் பாடத்திட்டம்', navigation: 'கற்றல் நிலைகள்', menu: 'பட்டியல்', closeMenu: 'பட்டியலை மூடு', languageLabel: 'மொழி', homeLabel: 'படி அண்ட் கோ முகப்பு',
+    routes: { chat: 'கற்போம்', practice: 'பயிற்சி', tests: 'தேர்வு', progress: 'மேம்பாடு', login: 'உள்நுழை' },
+    routeNotes: { chat: 'உரையாடல் ஆசிரியர்', practice: 'தலைப்புக் கேள்விகள்', tests: 'மாதிரித் தேர்வுகள்', progress: 'மீள்பார்வை & முன்னேற்றம்' },
+    directAccess: 'கற்றல் முன்னோட்டத்திற்குச் செல்', sampleComing: 'இந்த மாதிரித் தொகுதி அடுத்த பணியில் சேர்க்கப்படும்.',
+    loginKicker: 'நீ வளர்வதற்கான இடம்', loginTitle: 'மீண்டும் வருக.', signupTitle: 'புதிய தொடக்கம்.', loginSubtitle: 'உன்னைப் பார்ப்பதில் மகிழ்ச்சி. அடுத்த பக்கம் செல்லலாம்.', signupSubtitle: 'உன் கற்றல் பயணம் உன்னிடம் தொடங்குகிறது.',
+    login: 'உள்நுழை', signup: 'கணக்கு உருவாக்கு', name: 'உன் பெயர்', namePlaceholder: 'உன்னை எப்படி அழைக்கலாம்?', email: 'மின்னஞ்சல் முகவரி', password: 'கடவுச்சொல்', passwordPlaceholder: 'உன் கடவுச்சொல்லை இடு', passwordNew: 'குறைந்தது 12 எழுத்துகள்', showPassword: 'கடவுச்சொல்லைக் காட்டு', hidePassword: 'கடவுச்சொல்லை மறை', medium: 'பயிற்று மொழி', tamilMedium: 'தமிழ் வழி', englishMedium: 'ஆங்கில வழி', submitLogin: 'கற்கத் தொடங்கலாம்', submitSignup: 'என் பயணத்தைத் தொடங்கு', noSave: 'இது முன்னோட்டம் மட்டும். உன் விவரங்கள் அனுப்பப்படவோ சேமிக்கப்படவோ இல்லை.', dismiss: 'செய்தியை மூடு', newHere: 'இங்கு புதியவரா?', existing: 'ஏற்கனவே கணக்கு உள்ளதா?', freshStart: 'புதிதாகத் தொடங்கு', ownPace: 'ஒரே பாடத்திட்டம். உன் சொந்த வேகம்.', classLine: 'தமிழ் & ஆங்கில வழி · தமிழ்நாடு 10ஆம் வகுப்பு',
+  },
+};
