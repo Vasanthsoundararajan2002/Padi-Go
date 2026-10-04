@@ -4,8 +4,14 @@ const routes = new Set(['chat', 'practice', 'tests', 'progress', 'login']);
 const languageIds = new Set(['ta-Latn', 'en', 'ta']);
 const questionById = new Map(questions.map((question) => [question.id, question]));
 
+function createSessionId() {
+  if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
+  return `padi-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
 export function createInitialSession(language = 'ta-Latn') {
   return {
+    sessionId: createSessionId(),
     route: '#/chat',
     language: languageIds.has(language) ? language : 'ta-Latn',
     learningMedium: 'ta',

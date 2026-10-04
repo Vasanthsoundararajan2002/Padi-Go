@@ -77,7 +77,7 @@ const copy = {
   },
 };
 
-export default function ChatView({ lang, subjectId, onSubjectChange, chat, setChat, learningMedium, onMediumChange }) {
+export default function ChatView({ lang, subjectId, onSubjectChange, chat, setChat, learningMedium, onMediumChange, sessionId }) {
   const text = copy[lang] || copy['ta-Latn'];
   const messages = chat.messages ?? [];
   const draft = chat.draft ?? '';
@@ -123,7 +123,7 @@ export default function ChatView({ lang, subjectId, onSubjectChange, chat, setCh
 
     try {
       const history = buildHistory();
-      const result = await sendMessage(subjectId, medium, lang, value, history);
+      const result = await sendMessage(subjectId, medium, lang, value, history, sessionId);
 
       // Update the last message with the AI response
       const updated = newMessages.map((msg) =>

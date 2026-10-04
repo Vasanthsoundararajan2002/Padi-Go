@@ -13,13 +13,14 @@ const API_BASE = '/api';
  * @param {string} language - UI language: 'ta-Latn', 'en', or 'ta'
  * @param {string} message  - The student's question
  * @param {Array}  history  - Conversation history [{role, content}, ...]
+ * @param {string} sessionId - Volatile browser-session identifier for ADK memory
  * @returns {Promise<{reply, source, references, diagrams, error}>}
  */
-export async function sendMessage(subject, medium, language, message, history = []) {
+export async function sendMessage(subject, medium, language, message, history = [], sessionId = 'preview') {
   const response = await fetch(`${API_BASE}/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ subject, medium, language, message, history }),
+    body: JSON.stringify({ subject, medium, language, message, history, session_id: sessionId }),
   });
   const result = await response.json();
   if (!response.ok || result.error) throw new Error(result.error || result.detail || `Server error: ${response.status}`);

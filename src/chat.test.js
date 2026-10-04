@@ -7,10 +7,11 @@ test('chat returns a textbook answer from the API', async () => {
   globalThis.fetch = async (_url, options) => {
     const request = JSON.parse(options.body);
     assert.equal(request.subject, 'science');
+    assert.equal(request.session_id, 'browser-123');
     return { ok: true, json: async () => ({ reply: 'Newton explained motion.', source: 'textbook', references: [{ page: 12 }] }) };
   };
   try {
-    const result = await sendMessage('science', 'en', 'en', 'Newton law?');
+    const result = await sendMessage('science', 'en', 'en', 'Newton law?', [], 'browser-123');
     assert.equal(result.reply, 'Newton explained motion.');
     assert.equal(result.references[0].page, 12);
   } finally { globalThis.fetch = original; }

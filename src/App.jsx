@@ -47,7 +47,7 @@ export default function App() {
   } else if (route === 'progress') {
     view = <ProgressView lang={state.language} attempts={state.attempts}/>;
   } else {
-    view = <ChatView lang={state.language} subjectId={state.selectedSubjectId} onSubjectChange={(subjectId) => dispatch({ type: 'subject/set', subjectId })} chat={state.chat} setChat={(chat) => dispatch({ type: 'chat/set', chat })} learningMedium={state.learningMedium} onMediumChange={(medium) => dispatch({ type: 'medium/set', medium })}/>;
+    view = <ChatView lang={state.language} subjectId={state.selectedSubjectId} onSubjectChange={(subjectId) => dispatch({ type: 'subject/set', subjectId })} chat={state.chat} setChat={(chat) => dispatch({ type: 'chat/set', chat })} learningMedium={state.learningMedium} onMediumChange={(medium) => dispatch({ type: 'medium/set', medium })} sessionId={state.sessionId}/>;
   }
 
   return <AppShell state={state} dispatch={dispatch}>{view}</AppShell>;

@@ -28,6 +28,17 @@ test('initial chat has no saved scroll position', () => {
   assert.equal(createInitialSession().chat.scrollTop, undefined);
 });
 
+test('browser session ID is created once and survives navigation and language changes', () => {
+  const state = createInitialSession();
+  assert.match(state.sessionId, /^[a-zA-Z0-9-]{8,128}$/);
+
+  const navigated = appReducer(state, { type: 'route/set', route: '#/practice' });
+  const translated = appReducer(navigated, { type: 'language/set', language: 'ta' });
+
+  assert.equal(navigated.sessionId, state.sessionId);
+  assert.equal(translated.sessionId, state.sessionId);
+});
+
 test('attempt/add records a completed attempt ID only once after a route remount', () => {
   const attempt = { id: 'attempt-1', submittedAt: 100, result: { score: 1, total: 1 } };
   const once = appReducer(createInitialSession(), { type: 'attempt/add', attempt });

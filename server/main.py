@@ -5,14 +5,15 @@ from __future__ import annotations
 import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
+from typing import Literal
 
 from fastapi import FastAPI, HTTPException
-from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
-from config import available_subjects
+from config import GROQ_API_KEY, available_subjects
+from padi_adk.runtime import TutorRequest, get_runtime
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -59,10 +60,11 @@ class ChatMessage(BaseModel):
 
 
 class ChatRequest(BaseModel):
-    subject: str = Field(..., description="Subject id: tamil, english, maths, science, social")
-    medium: str = Field("en", description="Textbook medium: 'en' or 'ta'")
-    language: str = Field("ta-Latn", description="UI language: 'ta-Latn', 'en', or 'ta'")
+    subject: Literal["tamil", "english", "maths", "science", "social"]
+    medium: Literal["en", "ta"] = "en"
+    language: Literal["ta-Latn", "en", "ta"] = "ta-Latn"
     message: str = Field(..., min_length=1, description="The student's question")
+    session_id: str = Field(..., min_length=1, max_length=128)
     history: list[ChatMessage] = Field(default_factory=list, description="Conversation history")
 
 
@@ -81,8 +83,8 @@ class ReferenceInfo(BaseModel):
 class ChatResponse(BaseModel):
     reply: str
     source: str = "textbook"
-    references: list[ReferenceInfo] = []
-    diagrams: list[DiagramInfo] = []
+    references: list[ReferenceInfo] = Field(default_factory=list)
+    diagrams: list[DiagramInfo] = Field(default_factory=list)
     error: str | None = None
 
 
@@ -115,27 +117,28 @@ async def list_subjects():
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
-    """Main chat endpoint — ask a question to a subject AI agent."""
-    from agents import ask_agent
+    """Run one grounded tutor turn through the ADK 2 workflow."""
+    if not GROQ_API_KEY:
+        raise HTTPException(
+            status_code=503,
+            detail="Tutor model credentials are not configured.",
+        )
 
-    valid_subjects = {"tamil", "english", "maths", "science", "social"}
-    if request.subject not in valid_subjects:
-        raise HTTPException(status_code=400, detail=f"Invalid subject: {request.subject}")
-
-    if request.medium not in ("en", "ta"):
-        raise HTTPException(status_code=400, detail=f"Invalid medium: {request.medium}")
-
-    # Convert history to list of dicts
-    history = [{"role": m.role, "content": m.content} for m in request.history]
-
-    result = await run_in_threadpool(
-        ask_agent,
-        subject=request.subject,
-        medium=request.medium,
-        language=request.language,
-        message=request.message,
-        history=history,
-    )
+    try:
+        result = await get_runtime().ask(TutorRequest(
+            subject=request.subject,
+            medium=request.medium,
+            language=request.language,
+            message=request.message,
+            session_id=request.session_id,
+            history=[message.model_dump() for message in request.history],
+        ))
+    except Exception:
+        logger.exception("ADK tutor request failed")
+        raise HTTPException(
+            status_code=503,
+            detail="Tutor is temporarily unavailable. Please try again.",
+        ) from None
 
     return ChatResponse(
         reply=result.reply,
