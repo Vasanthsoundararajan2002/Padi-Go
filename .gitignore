@@ -8,3 +8,6 @@ dist/
 *.key
 __pycache__/
 .venv/
+server/chroma_db/
+server/diagrams/
+server/diagram_index.json

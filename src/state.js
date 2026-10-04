@@ -11,7 +11,7 @@ export function createInitialSession(language = 'ta-Latn') {
     learningMedium: 'ta',
     drawerOpen: false,
     selectedSubjectId: 'maths',
-    chat: { messages: [], scrollTop: 0 },
+    chat: { messages: [] },
     practice: {},
     test: null,
     attempts: [],
@@ -29,7 +29,7 @@ export function appReducer(state, action) {
     case 'chat/set': return { ...state, chat: action.chat };
     case 'practice/set': return { ...state, practice: action.practice };
     case 'test/set': return { ...state, test: action.test };
-    case 'attempt/add': return { ...state, attempts: [...state.attempts, action.attempt] };
+    case 'attempt/add': return state.attempts.some(({ id }) => id === action.attempt?.id) ? state : { ...state, attempts: [...state.attempts, action.attempt] };
     default: return state;
   }
 }
@@ -58,12 +58,27 @@ export function getUnanswered(questionIds, answers = {}) {
   return questionIds.filter((id) => answers[id] == null || answers[id] === '');
 }
 
+export function getPracticeTarget(hash = '') {
+  const query = hash.split('?')[1];
+  if (!query) return null;
+  const params = new URLSearchParams(query);
+  const question = questionById.get(params.get('question'));
+  if (!question) return null;
+  const topicQuestions = questions.filter(({ topicId }) => topicId === question.topicId);
+  return {
+    subjectId: question.subjectId,
+    topicId: question.topicId,
+    questionId: question.id,
+    questionIndex: topicQuestions.findIndex(({ id }) => id === question.id),
+  };
+}
+
 export function getRemainingSeconds(deadline, now = Date.now()) {
   return Math.max(0, Math.ceil((deadline - now) / 1000));
 }
 
-export function shouldAutoSubmit(attempt, now = Date.now()) {
-  return attempt?.submittedAt == null && getRemainingSeconds(attempt?.deadline, now) === 0;
+export function shouldAutoSubmit(session, now = Date.now()) {
+  return session?.attempt == null && session?.submittedAt == null && getRemainingSeconds(session?.deadline, now) === 0;
 }
 
 export function createAttemptSnapshot(input) {
@@ -119,6 +134,23 @@ export function createMockAttempt({ id, test, answers, startedAt, submittedAt, s
     ...snapshot,
     unansweredQuestionIds: snapshot.result.unansweredQuestionIds,
   });
+}
+
+export function submitMockSession(session, test, submissionReason, submittedAt = Date.now(), id = `mock-${submittedAt}`) {
+  if (session.attempt) return session;
+  const effectiveReason = submittedAt >= session.deadline ? 'time-expired' : submissionReason;
+  return {
+    ...session,
+    confirmSubmit: false,
+    attempt: createMockAttempt({
+      id,
+      test,
+      answers: session.answers,
+      startedAt: session.startedAt,
+      submittedAt,
+      submissionReason: effectiveReason,
+    }),
+  };
 }
 
 export function deriveProgress(attempts = []) {

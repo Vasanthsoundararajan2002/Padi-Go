@@ -13,6 +13,7 @@ import {
   normalizeRoute,
   shouldAutoSubmit,
   scoreAnswers,
+  submitMockSession,
 } from './state.js';
 
 const questionIds = [
@@ -22,6 +23,23 @@ const questionIds = [
   'maths.algebra.linear-equations.q04',
   'maths.algebra.linear-equations.q05',
 ];
+
+test('initial chat has no saved scroll position', () => {
+  assert.equal(createInitialSession().chat.scrollTop, undefined);
+});
+
+test('attempt/add records a completed attempt ID only once after a route remount', () => {
+  const attempt = { id: 'attempt-1', submittedAt: 100, result: { score: 1, total: 1 } };
+  const once = appReducer(createInitialSession(), { type: 'attempt/add', attempt });
+  const twice = appReducer(once, { type: 'attempt/add', attempt: { id: 'attempt-1' } });
+  assert.deepEqual(twice.attempts, [attempt]);
+});
+
+test('manual mock confirmation at or after deadline records time expiry atomically', () => {
+  const session = { testId: mockTests[0].id, startedAt: 0, deadline: 100, answers: {}, confirmSubmit: true, attempt: null };
+  const submitted = submitMockSession(session, mockTests[0], 'manual', 100, 'attempt-expired-at-confirm');
+  assert.equal(submitted.attempt.submissionReason, 'time-expired');
+});
 
 test('route changes preserve chat, practice, and in-progress test state', () => {
   const activity = {

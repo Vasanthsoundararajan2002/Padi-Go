@@ -1,14 +1,47 @@
 # Padi and Go
 
-React frontend for an independent Tamil Nadu State Board Class 10 learning project.
+Padi and Go is a multilingual learning platform for Tamil Nadu State Board Class 10 students. It combines a textbook-grounded tutor with practice, mock tests, and progress revision across Tamil, English, Maths, Science, and Social Science.
 
-## Run
+## Learning levels
 
-Install Node.js 22 LTS and run `npm install`, then `npm run dev`.
-Build with `npm run build`. The build is written to `dist/`.
+1. Learn — textbook RAG chatbot with relevant page images and step-by-step answers
+2. Practise — topic questions, hints, feedback, and retry
+3. Test — timed sample mock tests with review and objective scoring
+4. Improve — attempt history, mistakes, explanations, and related practice links
 
-Includes animated subject books, a Thanglish-first interface with Tamil and English options, login and signup forms, password visibility, responsive layouts and reduced-motion support. Only the interface language preference is stored locally.
+The interface supports Thanglish, English, and Tamil. Language changes preserve in-session work.
 
-The landing page includes a scripted algebra example with step-by-step tutoring, an untimed practice question with feedback and hints, and revision. Three selectable learning paces start with step-by-step support. This is a sample, not live AI or a complete syllabus course.
+## Frontend
 
-This is a frontend preview. Form submissions do not authenticate, persist credentials, or contact a backend. Database, email and AI integrations are intentionally deferred. Fonts load from Google Fonts with system fallbacks. The app is not affiliated with the Tamil Nadu government.
+Requires Node.js 22 or newer.
+
+```bash
+npm install
+npm run dev
+```
+
+The app opens at `http://127.0.0.1:5173/Padi-Go/#/chat`. Run `npm test` for the frontend tests and `npm run build` for a production build.
+
+## AI backend
+
+Requires Python 3.11 or newer.
+
+```bash
+cd server
+python -m venv .venv
+.venv\Scripts\pip install -r requirements.txt
+copy .env.example .env
+```
+
+Add the required API keys to `server/.env`, then build the local textbook index:
+
+```bash
+.venv\Scripts\python ingest.py --all
+.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000
+```
+
+The Vite development server proxies `/api` requests to the backend. Chroma data and extracted textbook diagrams are generated locally and are intentionally excluded from Git.
+
+## Textbooks and privacy
+
+The included PDFs are used as the local retrieval source. Learning activity stays in browser session memory; only the interface language preference is persisted. Login remains a preview and does not authenticate users. The project is not affiliated with the Tamil Nadu government.
